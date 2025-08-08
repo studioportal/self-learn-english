@@ -1,8 +1,10 @@
 [build]
+  base = "/"
   publish = "/"
-  command = ""
+  command = "# no build command needed"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
