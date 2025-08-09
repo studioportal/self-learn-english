@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Player - SELF-LEARN ENGLISH</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4f8cff;
+      --secondary-color: #a6e1fa;
+      --accent-color: #ffd700;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+    }
+    body {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .player-container {
+      background: white;
+      border-radius: 2rem;
+      padding: 3rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      color: var(--text-dark);
+    }
+    .chapter-info {
+      margin-bottom: 2rem;
+    }
+    .chapter-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    .chapter-subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+    .audio-player {
+      width: 100%;
+      margin: 2rem 0;
+      border-radius: 1rem;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .control-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .control-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      background: var(--primary-color);
+      color: white;
+    }
+    .back-btn {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      background: rgba(255,255,255,0.9);
+      color: var(--text-dark);
+      border: none;
+      border-radius: 2rem;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .back-btn:hover {
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      color: var(--text-dark);
+    }
+    .progress-container {
+      margin: 1.5rem 0;
+    }
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-btn">
+    <i class="fas fa-arrow-left me-2"></i>Back to Home
+  </a>
+
+  <div class="player-container">
+    <div class="chapter-info">
+      <div class="chapter-title" id="chapterTitle">Select a Chapter</div>
+      <div class="chapter-subtitle" id="chapterSubtitle">Choose an audio lesson to begin</div>
+    </div>
+
+    <audio id="audioPlayer" class="audio-player" controls preload="metadata">
+      <source id="audioSource" src="" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="progress-container">
+      <div class="time-display">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="control-btn" id="prevBtn" title="Previous Chapter">
+        <i class="fas fa-backward"></i>
+      </button>
+      <button class="control-btn" id="playPauseBtn" title="Play/Pause">
+        <i class="fas fa-play"></i>
+      </button>
+      <button class="control-btn" id="nextBtn" title="Next Chapter">
+        <i class="fas fa-forward"></i>
+      </button>
+    </div>
+
+    <div class="mt-4">
+      <select class="form-select" id="chapterSelect">
+        <option value="">Select a chapter...</option>
+        <option value="audio/chap01.mp3" data-title="Chapter 1" data-subtitle="Hello! – Greetings & Introductions">Chapter 1: Greetings & Introductions</option>
+        <option value="audio/chap02.mp3" data-title="Chapter 2" data-subtitle="At Home – Rooms & Daily Routine">Chapter 2: At Home & Daily Routine</option>
+        <option value="audio/chap02_1.mp3" data-title="Chapter 2 (Part 2)" data-subtitle="At Home – Extra Practice">Chapter 2 (Part 2): Extra Practice</option>
+        <option value="audio/chap03.mp3" data-title="Chapter 3" data-subtitle="Food & Drinks – Ordering & Preferences">Chapter 3: Food & Drinks</option>
+        <option value="audio/chap03_1.mp3" data-title="Chapter 3 (Part 2)" data-subtitle="Food & Drinks – Extra Practice 1">Chapter 3 (Part 2): Extra Practice 1</option>
+        <option value="audio/chap03_2.mp3" data-title="Chapter 3 (Part 3)" data-subtitle="Food & Drinks – Extra Practice 2">Chapter 3 (Part 3): Extra Practice 2</option>
+        <option value="audio/chap04.mp3" data-title="Chapter 4" data-subtitle="Family & Friends – Talking About People">Chapter 4: Family & Friends</option>
+        <option value="audio/chap04_1.mp3" data-title="Chapter 4 (Part 2)" data-subtitle="Family & Friends – Extra Practice">Chapter 4 (Part 2): Extra Practice</option>
+        <option value="audio/chap05.mp3" data-title="Chapter 5" data-subtitle="At the Market – Shopping & Numbers">Chapter 5: At the Market</option>
+        <!-- Add more chapters as needed -->
+      </select>
+    </div>
+  </div>
+
+  <script>
+    const audioPlayer = document.getElementById('audioPlayer');
+    const audioSource = document.getElementById('audioSource');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const chapterSelect = document.getElementById('chapterSelect');
+    const chapterTitle = document.getElementById('chapterTitle');
+    const chapterSubtitle = document.getElementById('chapterSubtitle');
+    const currentTime = document.getElementById('currentTime');
+    const duration = document.getElementById('duration');
+
+    let currentChapterIndex = -1;
+    const chapters = Array.from(chapterSelect.options).slice(1); // Remove first empty option
+
+    // Load chapter from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const chapterParam = urlParams.get('chapter');
+    if (chapterParam) {
+      loadChapter(chapterParam);
+    }
+
+    // Chapter selection
+    chapterSelect.addEventListener('change', function() {
+      if (this.value) {
+        loadChapter(this.value);
+      }
+    });
+
+    // Play/Pause functionality
+    playPauseBtn.addEventListener('click', function() {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+      } else {
+        audioPlayer.pause();
+      }
+    });
+
+    // Update play/pause button
+    audioPlayer.addEventListener('play', function() {
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    });
+
+    audioPlayer.addEventListener('pause', function() {
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
+
+    // Previous/Next chapter
+    prevBtn.addEventListener('click', function() {
+      if (currentChapterIndex > 0) {
+        currentChapterIndex--;
+        loadChapterByIndex(currentChapterIndex);
+      }
+    });
+
+    nextBtn.addEventListener('click', function() {
+      if (currentChapterIndex < chapters.length - 1) {
+        currentChapterIndex++;
+        loadChapterByIndex(currentChapterIndex);
+      }
+    });
+
+    // Time updates
+    audioPlayer.addEventListener('timeupdate', function() {
+      currentTime.textContent = formatTime(audioPlayer.currentTime);
+    });
+
+    audioPlayer.addEventListener('loadedmetadata', function() {
+      duration.textContent = formatTime(audioPlayer.duration);
+    });
+
+    function loadChapter(src) {
+      audioSource.src = src;
+      audioPlayer.load();
+      
+      // Update UI
+      const option = chapterSelect.querySelector(`option[value="${src}"]`);
+      if (option) {
+        chapterTitle.textContent = option.dataset.title;
+        chapterSubtitle.textContent = option.dataset.subtitle;
+        chapterSelect.value = src;
+        currentChapterIndex = chapters.findIndex(ch => ch.value === src);
+      }
+    }
+
+    function loadChapterByIndex(index) {
+      if (index >= 0 && index < chapters.length) {
+        const chapter = chapters[index];
+        loadChapter(chapter.value);
+      }
+    }
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
