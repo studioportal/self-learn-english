@@ -9,8 +9,9 @@
 [build.processing.html]
   pretty_urls = true
 
+# Redirect for SPA fallback - only redirect if file doesn't exist
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true
+  force = false
