@@ -14,46 +14,93 @@
       --text-dark: #2c3e50;
       --text-light: #7f8c8d;
     }
+    
     body {
       background: #f8fafc;
       color: var(--text-dark);
     }
+    
     .navbar {
       background: white;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    .audio-card {
+    
+    .chapter-card {
       background: white;
       border-radius: 1rem;
       padding: 1.5rem;
       margin-bottom: 1rem;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
       transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid #e3e6f0;
     }
-    .audio-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    
+    .chapter-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border-color: var(--primary-color);
     }
-    .qr-code {
-      display: block;
-      margin: 0 auto 1rem;
-      max-width: 150px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
-    .qr-code:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    
     .chapter-number {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--primary-color);
     }
+    
     .chapter-title {
-      font-size: 1.25rem;
+      font-size: 1rem;
       color: var(--text-dark);
+      margin: 0.5rem 0;
+    }
+    
+    .play-button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.5rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .play-button:hover {
+      background: #3a7bd5;
+      transform: translateY(-1px);
+    }
+    
+    .play-button:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .audio-controls {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    
+    .current-playing {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+    }
+    
+    .current-playing .chapter-number,
+    .current-playing .chapter-title {
+      color: white;
+    }
+    
+    #globalAudioPlayer {
+      position: sticky;
+      bottom: 20px;
+      margin: 20px auto;
+      max-width: 400px;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 2px solid var(--primary-color);
+      display: none;
     }
   </style>
 </head>
@@ -78,118 +125,704 @@
 
   <div class="container py-5">
     <h1 class="text-center mb-5">Audio Library</h1>
+    <p class="text-center text-muted mb-5">Click the play buttons to listen to each chapter audio</p>
 
     <div class="row">
       <!-- Chapter 1 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
+        <div class="chapter-card" id="chapter-1">
           <div class="chapter-number mb-2">Chapter 1</div>
-          <div class="chapter-title mb-3">Greetings & Introductions</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap01.mp3" alt="QR Code for Chapter 1" class="qr-code">
-          <audio controls>
-            <source src="audio/chap01.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+          <div class="chapter-title">Hello! – Greetings & Introductions</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap01.mp3', 'Chapter 1', 'chapter-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
+
       <!-- Chapter 2 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
+        <div class="chapter-card" id="chapter-2">
           <div class="chapter-number mb-2">Chapter 2</div>
-          <div class="chapter-title mb-3">At Home & Daily Routine</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap02.mp3" alt="QR Code for Chapter 2" class="qr-code">
-          <audio controls>
-            <source src="audio/chap02.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+          <div class="chapter-title">At Home – Rooms & Daily Routine</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap02.mp3', 'Chapter 2', 'chapter-2')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
-      <!-- Chapter 2.2 -->
+
+      <!-- Chapter 2.1 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
-          <div class="chapter-number mb-2">Chapter 2.2</div>
-          <div class="chapter-title mb-3">At Home – Extra Practice</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap02_1.mp3" alt="QR Code for Chapter 2 Part 2" class="qr-code">
-          <audio controls>
-            <source src="audio/chap02_1.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+        <div class="chapter-card" id="chapter-2-1">
+          <div class="chapter-number mb-2">Chapter 2.1</div>
+          <div class="chapter-title">At Home – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap02_1.mp3', 'Chapter 2.1', 'chapter-2-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
+
       <!-- Chapter 3 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
+        <div class="chapter-card" id="chapter-3">
           <div class="chapter-number mb-2">Chapter 3</div>
-          <div class="chapter-title mb-3">Food & Drinks – Ordering</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap03.mp3" alt="QR Code for Chapter 3" class="qr-code">
-          <audio controls>
-            <source src="audio/chap03.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+          <div class="chapter-title">Food & Drinks – Ordering & Preferences</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap03.mp3', 'Chapter 3', 'chapter-3')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
-      <!-- Chapter 3 Part 2 -->
+
+      <!-- Chapter 3.1 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
+        <div class="chapter-card" id="chapter-3-1">
+          <div class="chapter-number mb-2">Chapter 3.1</div>
+          <div class="chapter-title">Food & Drinks – Extra Practice 1</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap03_1.mp3', 'Chapter 3.1', 'chapter-3-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 3.2 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-3-2">
           <div class="chapter-number mb-2">Chapter 3.2</div>
-          <div class="chapter-title mb-3">Food & Drinks – Extra Practice 1</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap03_1.mp3" alt="QR Code for Chapter 3 Part 2" class="qr-code">
-          <audio controls>
-            <source src="audio/chap03_1.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+          <div class="chapter-title">Food & Drinks – Extra Practice 2</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap03_2.mp3', 'Chapter 3.2', 'chapter-3-2')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
-      <!-- Chapter 3 Part 3 -->
-      <div class="col-md-6">
-        <div class="audio-card text-center">
-          <div class="chapter-number mb-2">Chapter 3.3</div>
-          <div class="chapter-title mb-3">Food & Drinks – Extra Practice 2</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap03_2.mp3" alt="QR Code for Chapter 3 Part 3" class="qr-code">
-          <audio controls>
-            <source src="audio/chap03_2.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-      </div>
+
       <!-- Chapter 4 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
+        <div class="chapter-card" id="chapter-4">
           <div class="chapter-number mb-2">Chapter 4</div>
-          <div class="chapter-title mb-3">Family & Friends – Talking About People</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap04.mp3" alt="QR Code for Chapter 4" class="qr-code">
-          <audio controls>
-            <source src="audio/chap04.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+          <div class="chapter-title">Family & Friends – Talking About People</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap04.mp3', 'Chapter 4', 'chapter-4')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
-      <!-- Chapter 4 Part 2 -->
+
+      <!-- Chapter 4.1 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
-          <div class="chapter-number mb-2">Chapter 4.2</div>
-          <div class="chapter-title mb-3">Family & Friends – Extra Practice</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap04_1.mp3" alt="QR Code for Chapter 4 Part 2" class="qr-code">
-          <audio controls>
-            <source src="audio/chap04_1.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+        <div class="chapter-card" id="chapter-4-1">
+          <div class="chapter-number mb-2">Chapter 4.1</div>
+          <div class="chapter-title">Family & Friends – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap04_1.mp3', 'Chapter 4.1', 'chapter-4-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
+
       <!-- Chapter 5 -->
       <div class="col-md-6">
-        <div class="audio-card text-center">
+        <div class="chapter-card" id="chapter-5">
           <div class="chapter-number mb-2">Chapter 5</div>
-          <div class="chapter-title mb-3">At the Market – Shopping & Numbers</div>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://SELF-LEARN-ENGLISH.netlify.app/audio/chap05.mp3" alt="QR Code for Chapter 5" class="qr-code">
-          <audio controls>
-            <source src="audio/chap05.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-          </audio>
+          <div class="chapter-title">At the Market – Shopping & Numbers</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap05.mp3', 'Chapter 5', 'chapter-5')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 6 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-6">
+          <div class="chapter-number mb-2">Chapter 6</div>
+          <div class="chapter-title">At the Doctor – Body & Health</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap06.mp3', 'Chapter 6', 'chapter-6')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 6.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-6-1">
+          <div class="chapter-number mb-2">Chapter 6.1</div>
+          <div class="chapter-title">At the Doctor – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap06_1.mp3', 'Chapter 6.1', 'chapter-6-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 7 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-7">
+          <div class="chapter-number mb-2">Chapter 7</div>
+          <div class="chapter-title">Weather & Seasons – What's Outside?</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap07.mp3', 'Chapter 7', 'chapter-7')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 7.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-7-1">
+          <div class="chapter-number mb-2">Chapter 7.1</div>
+          <div class="chapter-title">Weather & Seasons – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap07_1.mp3', 'Chapter 7.1', 'chapter-7-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 8 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-8">
+          <div class="chapter-number mb-2">Chapter 8</div>
+          <div class="chapter-title">Going Out – Places & Directions</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap08.mp3', 'Chapter 8', 'chapter-8')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 8.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-8-1">
+          <div class="chapter-number mb-2">Chapter 8.1</div>
+          <div class="chapter-title">Going Out – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap08_1.mp3', 'Chapter 8.1', 'chapter-8-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 9 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-9">
+          <div class="chapter-number mb-2">Chapter 9</div>
+          <div class="chapter-title">Time & Clock – Telling Time</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap09.mp3', 'Chapter 9', 'chapter-9')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 9.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-9-1">
+          <div class="chapter-number mb-2">Chapter 9.1</div>
+          <div class="chapter-title">Time & Clock – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap09_1.mp3', 'Chapter 9.1', 'chapter-9-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 10 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-10">
+          <div class="chapter-number mb-2">Chapter 10</div>
+          <div class="chapter-title">Jobs & Work – What Do You Do?</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap10.mp3', 'Chapter 10', 'chapter-10')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 10.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-10-1">
+          <div class="chapter-number mb-2">Chapter 10.1</div>
+          <div class="chapter-title">Jobs & Work – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap10_1.mp3', 'Chapter 10.1', 'chapter-10-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 11 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-11">
+          <div class="chapter-number mb-2">Chapter 11</div>
+          <div class="chapter-title">Travel & Transportation – On the Move</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap11.mp3', 'Chapter 11', 'chapter-11')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 11.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-11-1">
+          <div class="chapter-number mb-2">Chapter 11.1</div>
+          <div class="chapter-title">Travel & Transportation – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap11_1.mp3', 'Chapter 11.1', 'chapter-11-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 12 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-12">
+          <div class="chapter-number mb-2">Chapter 12</div>
+          <div class="chapter-title">At the Hotel – Check-In & Staying</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap12.mp3', 'Chapter 12', 'chapter-12')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 12.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-12-1">
+          <div class="chapter-number mb-2">Chapter 12.1</div>
+          <div class="chapter-title">At the Hotel – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap12_1.mp3', 'Chapter 12.1', 'chapter-12-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 13 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-13">
+          <div class="chapter-number mb-2">Chapter 13</div>
+          <div class="chapter-title">Shopping & Clothes – Try It On!</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap13.mp3', 'Chapter 13', 'chapter-13')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 13.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-13-1">
+          <div class="chapter-number mb-2">Chapter 13.1</div>
+          <div class="chapter-title">Shopping & Clothes – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap13_1.mp3', 'Chapter 13.1', 'chapter-13-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 14 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-14">
+          <div class="chapter-number mb-2">Chapter 14</div>
+          <div class="chapter-title">Hobbies & Free Time – What You Enjoy</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap14.mp3', 'Chapter 14', 'chapter-14')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 14.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-14-1">
+          <div class="chapter-number mb-2">Chapter 14.1</div>
+          <div class="chapter-title">Hobbies & Free Time – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap14_1.mp3', 'Chapter 14.1', 'chapter-14-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 15 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-15">
+          <div class="chapter-number mb-2">Chapter 15</div>
+          <div class="chapter-title">Emergencies & Help – Stay Safe</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap15.mp3', 'Chapter 15', 'chapter-15')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 15.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-15-1">
+          <div class="chapter-number mb-2">Chapter 15.1</div>
+          <div class="chapter-title">Emergencies & Help – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap15_1.mp3', 'Chapter 15.1', 'chapter-15-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 16 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-16">
+          <div class="chapter-number mb-2">Chapter 16</div>
+          <div class="chapter-title">In the Kitchen – Cooking & Tools</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap16.mp3', 'Chapter 16', 'chapter-16')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 16.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-16-1">
+          <div class="chapter-number mb-2">Chapter 16.1</div>
+          <div class="chapter-title">In the Kitchen – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap16_1.mp3', 'Chapter 16.1', 'chapter-16-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 17 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-17">
+          <div class="chapter-number mb-2">Chapter 17</div>
+          <div class="chapter-title">Feelings & Emotions – How You Feel</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap17.mp3', 'Chapter 17', 'chapter-17')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 17.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-17-1">
+          <div class="chapter-number mb-2">Chapter 17.1</div>
+          <div class="chapter-title">Feelings & Emotions – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap17_1.mp3', 'Chapter 17.1', 'chapter-17-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 18 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-18">
+          <div class="chapter-number mb-2">Chapter 18</div>
+          <div class="chapter-title">Using Technology – Phone & Internet</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap18.mp3', 'Chapter 18', 'chapter-18')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 18.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-18-1">
+          <div class="chapter-number mb-2">Chapter 18.1</div>
+          <div class="chapter-title">Using Technology – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap18_1.mp3', 'Chapter 18.1', 'chapter-18-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 19 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-19">
+          <div class="chapter-number mb-2">Chapter 19</div>
+          <div class="chapter-title">Daily Routines – Full Day in English</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap19.mp3', 'Chapter 19', 'chapter-19')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 19.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-19-1">
+          <div class="chapter-number mb-2">Chapter 19.1</div>
+          <div class="chapter-title">Daily Routines – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap19_1.mp3', 'Chapter 19.1', 'chapter-19-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 20 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-20">
+          <div class="chapter-number mb-2">Chapter 20</div>
+          <div class="chapter-title">Talking to Friends – Keep the Chat Going</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap20.mp3', 'Chapter 20', 'chapter-20')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 20.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-20-1">
+          <div class="chapter-number mb-2">Chapter 20.1</div>
+          <div class="chapter-title">Talking to Friends – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap20_1.mp3', 'Chapter 20.1', 'chapter-20-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 21 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-21">
+          <div class="chapter-number mb-2">Chapter 21</div>
+          <div class="chapter-title">At School – Learning in English</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap21.mp3', 'Chapter 21', 'chapter-21')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 21.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-21-1">
+          <div class="chapter-number mb-2">Chapter 21.1</div>
+          <div class="chapter-title">At School – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap21_1.mp3', 'Chapter 21.1', 'chapter-21-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 22 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-22">
+          <div class="chapter-number mb-2">Chapter 22</div>
+          <div class="chapter-title">Money & Shopping – Paying & Change</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap22.mp3', 'Chapter 22', 'chapter-22')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 22.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-22-1">
+          <div class="chapter-number mb-2">Chapter 22.1</div>
+          <div class="chapter-title">Money & Shopping – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap22_1.mp3', 'Chapter 22.1', 'chapter-22-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 23 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-23">
+          <div class="chapter-number mb-2">Chapter 23</div>
+          <div class="chapter-title">My Home & Apartment – Describe Your Space</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap23.mp3', 'Chapter 23', 'chapter-23')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 23.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-23-1">
+          <div class="chapter-number mb-2">Chapter 23.1</div>
+          <div class="chapter-title">My Home & Apartment – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap23_1.mp3', 'Chapter 23.1', 'chapter-23-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 24 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-24">
+          <div class="chapter-number mb-2">Chapter 24</div>
+          <div class="chapter-title">Culture & Customs – My Country, My Way</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap24.mp3', 'Chapter 24', 'chapter-24')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 24.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-24-1">
+          <div class="chapter-number mb-2">Chapter 24.1</div>
+          <div class="chapter-title">Culture & Customs – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap24_1.mp3', 'Chapter 24.1', 'chapter-24-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 25 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-25">
+          <div class="chapter-number mb-2">Chapter 25</div>
+          <div class="chapter-title">Review & Speak! – Your Final Challenge</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap25.mp3', 'Chapter 25', 'chapter-25')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 25.1 -->
+      <div class="col-md-6">
+        <div class="chapter-card" id="chapter-25-1">
+          <div class="chapter-number mb-2">Chapter 25.1</div>
+          <div class="chapter-title">Review & Speak! – Extra Practice</div>
+          <div class="audio-controls">
+            <button class="play-button" onclick="playChapter('audio/chap25_1.mp3', 'Chapter 25.1', 'chapter-25-1')">
+              <i class="fas fa-play me-2"></i>Play
+            </button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Global Audio Player -->
+    <div id="globalAudioPlayer">
+      <div class="text-center mb-2">
+        <strong id="currentChapterName">No audio selected</strong>
+      </div>
+      <audio controls id="mainAudio" class="w-100">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted mt-5 mb-2">
+      &copy; 2025 Mario Alvarez. All rights reserved.<br>
+      <span>Cel: 77316956</span>
+    </footer>
   </div>
+
+  <script>
+    let currentlyPlaying = null;
+
+    function playChapter(audioSrc, chapterName, cardId) {
+      const mainAudio = document.getElementById('mainAudio');
+      const playerDiv = document.getElementById('globalAudioPlayer');
+      const chapterNameSpan = document.getElementById('currentChapterName');
+      
+      // Remove highlight from previously playing card
+      if (currentlyPlaying) {
+        document.getElementById(currentlyPlaying).classList.remove('current-playing');
+      }
+      
+      // Set up new audio
+      mainAudio.src = audioSrc;
+      chapterNameSpan.textContent = chapterName;
+      playerDiv.style.display = 'block';
+      
+      // Highlight current card
+      document.getElementById(cardId).classList.add('current-playing');
+      currentlyPlaying = cardId;
+      
+      // Play audio
+      mainAudio.play().catch(e => {
+        console.error("Audio playback failed:", e);
+        alert("Audio playback was prevented by your browser. Please click play manually on the audio player.");
+      });
+      
+      // Scroll to player
+      playerDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Clean up when audio ends
+    document.getElementById('mainAudio').addEventListener('ended', function() {
+      if (currentlyPlaying) {
+        document.getElementById(currentlyPlaying).classList.remove('current-playing');
+        currentlyPlaying = null;
+      }
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
